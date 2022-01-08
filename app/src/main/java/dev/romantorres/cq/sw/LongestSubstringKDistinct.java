@@ -23,10 +23,12 @@ public class LongestSubstringKDistinct {
             if (charsCount.containsKey(rightChar)) {
                 charsCount.put(rightChar, charsCount.get(rightChar) + 1);
                 j++;
+                maxLongest = Math.max(maxLongest, j - i);
                 continue;
             } else if (charsCount.size() + 1 <= k) {
                 charsCount.put(rightChar, 1);
                 j++;
+                maxLongest = Math.max(maxLongest, j - i);
                 continue;
             }
 
@@ -35,8 +37,8 @@ public class LongestSubstringKDistinct {
             if (charsCount.get(leftChar) == 0) {
                 charsCount.remove(leftChar);
             }
-            maxLongest = Math.max(maxLongest, j - i);
             i++;
+            maxLongest = Math.max(maxLongest, j - i);
         }
         return maxLongest;
     }
