@@ -5,41 +5,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Given a string, find the length of the longest substring in it with no more than K distinct characters.
+ * Given a string, find the length of the longest substring in it with no more than K distinct
+ * characters.
  */
 public class LongestSubstringKDistinct {
 
-
     /**
-     * Finds the length of the longest substring, in the given {@oce string}, with no more than {@code k} distinct characters.
-     *
-     * @return The lengh
+     * Finds the length of the longest substring, in the given {@code string}, with no more than
+     * {@code k} distinct characters.
      */
     public static int findLongestLength(String string, int k) {
-        int  i = 0, j = 0, maxLongest = 0;
-        Map<Character, Integer> charsCount = new HashMap<>();
-        while (j < string.length()) {
+        int i = 0, longestLength = 0;
+        Map<Character, Integer> charOccurrences = new HashMap<>();
+        for (int j = 0; j < string.length(); j++) {
             char rightChar = string.charAt(j);
-            if (charsCount.containsKey(rightChar)) {
-                charsCount.put(rightChar, charsCount.get(rightChar) + 1);
-                j++;
-                maxLongest = Math.max(maxLongest, j - i);
-                continue;
-            } else if (charsCount.size() + 1 <= k) {
-                charsCount.put(rightChar, 1);
-                j++;
-                maxLongest = Math.max(maxLongest, j - i);
-                continue;
-            }
+            charOccurrences.merge(rightChar, 1, (a, b) -> a + b);
 
-            char leftChar = string.charAt(i);
-            charsCount.put(leftChar, charsCount.get(leftChar) - 1);
-            if (charsCount.get(leftChar) == 0) {
-                charsCount.remove(leftChar);
+            while (charOccurrences.size() > k) {
+                char leftChar = string.charAt(i++);
+                charOccurrences.put(leftChar, charOccurrences.get(leftChar) - 1);
+                if (charOccurrences.get(leftChar) == 0) {
+                    charOccurrences.remove(leftChar);
+                }
             }
-            i++;
-            maxLongest = Math.max(maxLongest, j - i);
+            longestLength = Math.max(longestLength, j - i + 1);
         }
-        return maxLongest;
+
+        return longestLength;
     }
 }
